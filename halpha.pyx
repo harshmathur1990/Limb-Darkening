@@ -87,7 +87,7 @@ def get_initial_guesses_for_center(rms_image):
     return num_x/den_x, num_y/den_y
 
 
-def get_actual_gradient_image(image_data, reverse=True, direction=1):
+def get_actual_gradient_image(image_data, reverse=True, direction=1, angle=7):
     cent_x, cent_y = get_initial_guesses_for_center(get_rms_image(image_data, 5))
 
     gradient_image = np.zeros(shape=image_data.shape, dtype=float)
@@ -109,7 +109,7 @@ def get_actual_gradient_image(image_data, reverse=True, direction=1):
             if int(cent_x) == x and int(cent_y) == y:
                 continue
 
-            if -25<=np.arctan((y-cent_y)/(x-cent_x)) * 180/np.pi<=25:
+            if (-1 * angle)<=np.arctan((y-cent_y)/(x-cent_x)) * 180/np.pi<=angle:
                 # the target is with slope infinite
                 outgoing_sum = 0.0
                 for i in range(y-2, y+5):
@@ -263,11 +263,11 @@ def get_flat_fielded_corrected_image(base_path, image, dark_image, flat_image):
     return image_data
 
 
-def save_gradient_image_with_guessed_center(base_path, image, dark_image, flat_image):
+def save_gradient_image_with_guessed_center(base_path, image, dark_image, flat_image, angle):
 
     image_data = get_flat_fielded_corrected_image(base_path, image, dark_image, flat_image)
 
-    gradient_image, cent_x, cent_y = get_actual_gradient_image(image_data)
+    gradient_image, cent_x, cent_y = get_actual_gradient_image(image_data, angle)
 
     f = open('gradient_images/'+image+'_gradient', 'wb')
 
@@ -359,9 +359,9 @@ def get_limb_darkening_corrected_image(base_path, image, dark_image, flat_image,
     return corrected_image
 
 
-def limb_darkening_corrected_flow(base_path, image, dark_image, flat_image):
+def limb_darkening_corrected_flow(base_path, image, dark_image, flat_image, angle):
     gradient_image, cent_x, cent_y = save_gradient_image_with_guessed_center(
-        base_path, image, dark_image, flat_image
+        base_path, image, dark_image, flat_image, angle
     )
 
     points = get_points_on_the_circle(gradient_image, cent_x, cent_y)
@@ -395,9 +395,12 @@ if __name__ == '__main__':
     # image_list = ['20180527T114644_CaK.fits']
     # flat_image = 'MasterFlat_20180527T102637_CaK.fits'
     # dark_image = 'MasterDark_20180527T112709_CaK.fits'
+    print ('Enter the angle for considering infinite slope: ')
+    angle = float(input())
     limb_darkening_corrected_flow(
         base_path,
         image,
         dark_image,
-        flat_image
+        flat_image,
+        angle
     )

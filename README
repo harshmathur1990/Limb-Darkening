@@ -25,6 +25,10 @@ flat_image = 'Flat_20170803_112801100.fits'
 
 angle = 7 # 25 for H alpha, 7 for CaK images
 
+# angle is an instrument dependent parameter, but once it is set, you can use the same parameter for all the  images from that instrument, I have done for kodaikanal solar data.
+# For H alpha images, I saw angle value as 25 and for CaK images, I saw the value as 7.
+
+
 halpha.limb_darkening_corrected_flow(
     base_path,
     image,

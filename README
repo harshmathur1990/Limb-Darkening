@@ -1,4 +1,4 @@
-This is an limb darkening implementation based on Bertello 2017 paper https://link.springer.com/article/10.1007/s11207-010-9570-z.
+This is an limb darkening implementation based on Bertello 2010 paper https://link.springer.com/article/10.1007/s11207-010-9570-z.
 
 
 To compile:

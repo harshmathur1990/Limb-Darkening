@@ -1,13 +1,13 @@
-#Limb Darkening Correction
+# Limb Darkening Correction
 
 This is an limb darkening implementation based on Bertello 2010 paper https://link.springer.com/article/10.1007/s11207-010-9570-z.
 
-##Algorithm:
+## Algorithm:
 
 1. Idea is to calculate solar disc radius and centre.
 2. Divide the solar disc by the median filtered image.
 
-##Method Followed
+## Method Followed
 
 1. A gradient Image is calculated, using the method described [here](http://www.astro.ucla.edu/~ulrich/MW_SPADP/Fits_Info.html)
 
@@ -21,19 +21,19 @@ This is an limb darkening implementation based on Bertello 2010 paper https://li
 
 6. Once we have the centre and radius, we convert flat fielded images to 512x512 for faster processing, do a median filter with size 105x105, and divide the solar disc with median filtered image to get the limb darkening corrected image.
 
-##How to Run the code:
+## How to Run the code:
 
-###To Compile
+### To Compile
 
 **python3 setup.py build_ext --inplace**
 
 
-###Create the following directories:
+### Create the following directories:
 1. output_images
 2. gradient_images
 3. profiles
 
-###Run this code on ipython3 shell:
+### Run this code on ipython3 shell:
 
 import halpha
 

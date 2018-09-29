@@ -109,7 +109,7 @@ def get_actual_gradient_image(image_data, reverse=True, direction=1):
             if int(cent_x) == x and int(cent_y) == y:
                 continue
 
-            if -7<=np.arctan((y-cent_y)/(x-cent_x)) * 180/np.pi<=7:
+            if -25<=np.arctan((y-cent_y)/(x-cent_x)) * 180/np.pi<=25:
                 # the target is with slope infinite
                 outgoing_sum = 0.0
                 for i in range(y-2, y+5):
@@ -261,15 +261,6 @@ def get_flat_fielded_corrected_image(base_path, image, dark_image, flat_image):
     image_data = image_data - np.min(image_data) + 1
 
     return image_data
-
-
-def get_guess_radii(gradient_image, cent_x, cent_y):
-    gima = scipy.signal.medfilt(gradient_image[int(cent_x)+20], 11)
-    maxima_array = np.r_[True, gima[1:] < gima[:-1]] & np.r_[gima[:-1] < gima[1:], True]
-
-    maxima_points = np.where(maxima_array==True)
-
-    return abs(maxima_points[0][-1]-maxima_points[0][0])
 
 
 def save_gradient_image_with_guessed_center(base_path, image, dark_image, flat_image):

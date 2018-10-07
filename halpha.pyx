@@ -267,7 +267,7 @@ def save_gradient_image_with_guessed_center(base_path, image, dark_image, flat_i
 
     image_data = get_flat_fielded_corrected_image(base_path, image, dark_image, flat_image)
 
-    gradient_image, cent_x, cent_y = get_actual_gradient_image(image_data, angle)
+    gradient_image, cent_x, cent_y = get_actual_gradient_image(image_data, reverse=True, direction=1, angle=angle)
 
     f = open('gradient_images/'+image+'_gradient', 'wb')
 

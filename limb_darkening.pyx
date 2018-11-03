@@ -359,6 +359,30 @@ def get_limb_darkening_corrected_image(base_path, image, dark_image, flat_image,
     return corrected_image
 
 
+def return_limb_darkening_corrected_image(image_data, headers):
+
+    accurate_x, accurate_y, radius_mean = headers['X0_MP'], headers['Y0_MP'], headers['R_SUN']
+
+    image_data = image_data - np.min(image_data) + 1
+
+    small_image = cv2.resize(image_data, dsize=(512, 512), interpolation=cv2.INTER_CUBIC)
+
+    flat_image = scipy.signal.medfilt(small_image, 105)
+
+    large_flat_image = cv2.resize(flat_image, dsize=(image_data.shape[0], image_data.shape[1]), interpolation=cv2.INTER_CUBIC)
+
+    large_flat_image = large_flat_image - np.min(large_flat_image) + 1
+
+    corrected_image = np.zeros(shape=image_data.shape)
+
+    for i in range(image_data.shape[0]):
+        for j in range(image_data.shape[1]):
+            if (i-accurate_x)**2 + (j-accurate_y)**2 - ((0.97**2) * radius_mean**2) <=0:
+                corrected_image[i][j] = image_data[i][j]/large_flat_image[i][j]
+
+    return corrected_image
+
+
 def limb_darkening_corrected_flow(base_path, image, dark_image, flat_image, angle):
     gradient_image, cent_x, cent_y = save_gradient_image_with_guessed_center(
         base_path, image, dark_image, flat_image, angle

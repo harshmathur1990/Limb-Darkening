@@ -4,6 +4,6 @@ import numpy
 import astropy
 
 setup(
-    ext_modules = cythonize("halpha.pyx"),
+    ext_modules = cythonize("limb_darkening.pyx"),
     include_dirs=[numpy.get_include()]
 )
